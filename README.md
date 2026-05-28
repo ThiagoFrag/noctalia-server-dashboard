@@ -44,7 +44,7 @@ Add this repo to `~/.config/noctalia/plugins.json` under `sources`:
 {
   "sources": [
     { "enabled": true, "name": "Noctalia Plugins", "url": "https://github.com/noctalia-dev/noctalia-plugins" },
-    { "enabled": true, "name": "Server Dashboard", "url": "https://github.com/<your-user>/noctalia-server-dashboard" }
+    { "enabled": true, "name": "Server Dashboard", "url": "https://github.com/ThiagoFrag/noctalia-server-dashboard" }
   ],
   "states": {
     "server-dashboard": { "enabled": true }
@@ -57,7 +57,7 @@ Restart Noctalia (`pkill -f "qs -c noctalia-shell"; qs -c noctalia-shell &`). Th
 ### Manual install (recommended for hacking)
 
 ```bash
-git clone https://github.com/<your-user>/noctalia-server-dashboard.git \
+git clone https://github.com/ThiagoFrag/noctalia-server-dashboard.git \
   ~/.config/noctalia/plugins/server-dashboard
 
 # Add to plugins.json

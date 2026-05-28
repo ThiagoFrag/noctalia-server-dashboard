@@ -5,7 +5,7 @@
   "minNoctaliaVersion": "4.0.0",
   "author": "thiago",
   "license": "MIT",
-  "repository": "https://github.com/homosapeco/noctalia-server-dashboard",
+  "repository": "https://github.com/ThiagoFrag/noctalia-server-dashboard",
   "description": "Multi-server auto-discovery dashboard. SSH+Docker, Tailscale import, Stream Deck tiles, live health.",
   "tags": [
     "Bar",
