@@ -1,0 +1,88 @@
+{
+  "id": "server-dashboard",
+  "name": "Server Dashboard",
+  "version": "3.0.0",
+  "minNoctaliaVersion": "4.0.0",
+  "author": "thiago",
+  "license": "MIT",
+  "repository": "https://github.com/homosapeco/noctalia-server-dashboard",
+  "description": "Multi-server auto-discovery dashboard. SSH+Docker, Tailscale import, Stream Deck tiles, live health.",
+  "tags": [
+    "Bar",
+    "Panel",
+    "Network",
+    "System",
+    "Utility"
+  ],
+  "entryPoints": {
+    "main": "Main.qml",
+    "barWidget": "BarWidget.qml",
+    "panel": "Panel.qml",
+    "settings": "Settings.qml"
+  },
+  "dependencies": {
+    "plugins": []
+  },
+  "metadata": {
+    "defaultSettings": {
+      "servers": [],
+      "activeServerId": "",
+      "defaultSshUser": "root",
+      "discoveryInterval": 300000,
+      "refreshInterval": 30000,
+      "showCountBadge": true,
+      "overrides": {},
+      "categoryRules": [
+        { "match": "jellyfin|jellyseerr|sonarr|radarr|bazarr|prowlarr|plex|tautulli|sabnzbd|nzbget|transmission|deluge|qbittorrent|lidarr|readarr|kavita|calibre|navidrome|audiobookshelf|ombi|overseerr", "category": "Media" },
+        { "match": "nextcloud|immich|photoprism|filestash|seafile|paperless", "category": "Cloud" },
+        { "match": "coolify|dashy|dockge|portainer|gitea|gitlab|woodpecker|drone", "category": "Dev" },
+        { "match": "homeassistant|home-assistant|nodered|node-red", "category": "Home" },
+        { "match": "adguard|pihole|pi-hole|nginx|traefik|grafana|prometheus|uptime|vaultwarden|bitwarden", "category": "Infra" }
+      ],
+      "iconMap": {
+        "jellyfin": "icons/jellyfin.png",
+        "jellyseerr": "icons/jellyseerr.png",
+        "sonarr": "icons/sonarr.png",
+        "radarr": "icons/radarr.png",
+        "bazarr": "icons/bazarr.png",
+        "prowlarr": "icons/prowlarr.png",
+        "nextcloud": "icons/nextcloud.png",
+        "immich": "icons/immich.png",
+        "coolify": "icons/coolify.png",
+        "dashy": "icons/dashy.png",
+        "dockge": "icons/dockge.png",
+        "homeassistant": "icons/home-assistant.png",
+        "home-assistant": "icons/home-assistant.png",
+        "qbittorrent": "icons/qbittorrent.png",
+        "gluetun": "icons/gluetun.png",
+        "flaresolverr": "icons/flaresolverr.png",
+        "watchtower": "icons/watchtower.png",
+        "portainer": "icons/portainer.png",
+        "plex": "icons/plex.png",
+        "tautulli": "icons/tautulli.png",
+        "sabnzbd": "icons/sabnzbd.png",
+        "nzbget": "icons/nzbget.png",
+        "transmission": "icons/transmission.png",
+        "deluge": "icons/deluge.png",
+        "vaultwarden": "icons/vaultwarden.png",
+        "gitea": "icons/gitea.png",
+        "grafana": "icons/grafana.png",
+        "prometheus": "icons/prometheus.png",
+        "uptime-kuma": "icons/uptime-kuma.png",
+        "adguard": "icons/adguard-home.png",
+        "pihole": "icons/pi-hole.png",
+        "pi-hole": "icons/pi-hole.png"
+      },
+      "categoryColors": {
+        "Media": "#7B2CBF",
+        "Cloud": "#0082C9",
+        "Dev": "#8B5CF6",
+        "Home": "#2BB67D",
+        "Pentest": "#DC2626",
+        "Projetos": "#F59E0B",
+        "Infra": "#64748B",
+        "Outros": "#94A3B8"
+      }
+    }
+  }
+}

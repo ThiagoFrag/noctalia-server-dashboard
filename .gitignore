@@ -1,0 +1,15 @@
+# Runtime state (never commit)
+settings.json
+discovery-cache.json
+
+# Editor / OS
+.DS_Store
+*.swp
+*.swo
+.vscode/
+.idea/
+
+# QML cache
+qmlcache_loader.cpp
+*.qmlc
+*.jsc

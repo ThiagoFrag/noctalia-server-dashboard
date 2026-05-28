@@ -1,0 +1,56 @@
+{
+  "servers": [
+    {
+      "id": "homelab",
+      "name": "Homelab",
+      "host": "100.64.0.1",
+      "user": "myuser",
+      "port": 22
+    },
+    {
+      "id": "vps-without-ssh",
+      "name": "VPS (manual mode)",
+      "host": "203.0.113.10",
+      "manualServices": [
+        {
+          "name": "My App",
+          "url": "http://203.0.113.10:3000",
+          "category": "Projetos",
+          "color": "#F2D4D7",
+          "icon": "M"
+        }
+      ]
+    }
+  ],
+  "activeServerId": "homelab",
+  "defaultSshUser": "myuser",
+  "discoveryInterval": 300000,
+  "refreshInterval": 30000,
+  "showCountBadge": true,
+  "overrides": {
+    "my-container-name": {
+      "name": "Pretty Name",
+      "category": "Projetos",
+      "color": "#F59E0B",
+      "icon": "P"
+    },
+    "noise-i-dont-want": {
+      "hidden": true
+    }
+  },
+  "categoryRules": [
+    { "match": "jellyfin|sonarr|radarr|bazarr|prowlarr|jellyseerr", "category": "Media" },
+    { "match": "nextcloud|immich", "category": "Cloud" },
+    { "match": "coolify|dashy|dockge|portainer", "category": "Dev" }
+  ],
+  "iconMap": {
+    "jellyfin": "icons/jellyfin.png",
+    "nextcloud": "icons/nextcloud.png"
+  },
+  "categoryColors": {
+    "Media": "#7B2CBF",
+    "Cloud": "#0082C9",
+    "Dev": "#8B5CF6",
+    "Outros": "#94A3B8"
+  }
+}
