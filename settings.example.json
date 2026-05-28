@@ -20,10 +20,18 @@
           "icon": "M"
         }
       ]
+    },
+    {
+      "id": "tinyserver-ipv6",
+      "name": "Tiny Server (IPv6)",
+      "host": "2804:54:c100:1::200",
+      "user": "lin",
+      "port": 22
     }
   ],
   "activeServerId": "homelab",
   "defaultSshUser": "myuser",
+  "sshUserCandidates": ["root", "ubuntu", "debian", "fedora", "ec2-user", "admin", "pi", "deploy", "myuser"],
   "discoveryInterval": 300000,
   "refreshInterval": 30000,
   "showCountBadge": true,

@@ -28,6 +28,7 @@
       "servers": [],
       "activeServerId": "",
       "defaultSshUser": "root",
+      "sshUserCandidates": ["root", "ubuntu", "debian", "fedora", "ec2-user", "admin", "opc", "centos", "arch", "pi", "deploy"],
       "discoveryInterval": 300000,
       "refreshInterval": 30000,
       "showCountBadge": true,

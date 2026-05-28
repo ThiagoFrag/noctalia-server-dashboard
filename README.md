@@ -11,7 +11,8 @@ Multi-server homelab dashboard for [Noctalia Shell](https://github.com/noctalia-
 - Auto-discovery via SSH + `docker ps` on the remote host. Tiles are containers with an HTTP-reachable port.
 - Multi-server, with a switcher in the panel header.
 - Tailscale peer import — one-click "Add" for any online peer.
-- Auto-detect of SSH user. Tries `root`, `ubuntu`, `debian`, `fedora`, `ec2-user`, `admin`, `opc`, `centos`, `arch` plus your default and picks the first that connects.
+- Auto-detect of SSH user. Tries a configurable list of common usernames (`root`, `ubuntu`, `debian`, `fedora`, `ec2-user`, `admin`, `opc`, `centos`, `arch`, `pi`, `deploy` by default, plus your `defaultSshUser`) and picks the first that connects.
+- IPv6 host support — pass the bare address (`2804:54:c100:1::200`); the plugin wraps it in brackets for HTTP URLs and lets SSH handle it natively.
 - Real service logos via [homarr-labs/dashboard-icons](https://github.com/homarr-labs/dashboard-icons) (30 bundled). Falls back to a colored letter tile for unknowns.
 - Parallel `curl` health check every 30s, color-coded status dot per tile.
 - Smart categorization — containers grouped by regex rules (Media, Cloud, Dev, Pentest, Home, Infra, etc).
@@ -166,6 +167,12 @@ qs -c noctalia-shell ipc call plugin:server-dashboard listTailscale
 
 # Manually trigger SSH user auto-detection for a server
 qs -c noctalia-shell ipc call plugin:server-dashboard autoDetect my-vps
+
+# Add a server with explicit user
+qs -c noctalia-shell ipc call plugin:server-dashboard addServerSimple my-vps 1.2.3.4 root
+
+# Add a server and auto-detect the SSH user
+qs -c noctalia-shell ipc call plugin:server-dashboard addServerAuto my-vps 1.2.3.4
 
 # Edit SSH user of a server (clears its discovery cache, re-runs discovery)
 qs -c noctalia-shell ipc call plugin:server-dashboard editServerUser my-vps root

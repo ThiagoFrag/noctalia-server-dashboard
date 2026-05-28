@@ -23,6 +23,9 @@ Item {
   readonly property string defaultSshUser: pluginApi?.pluginSettings?.defaultSshUser
                                            ?? pluginApi?.manifest?.metadata?.defaultSettings?.defaultSshUser
                                            ?? "th"
+  readonly property var sshUserCandidates: pluginApi?.pluginSettings?.sshUserCandidates
+                                           ?? pluginApi?.manifest?.metadata?.defaultSettings?.sshUserCandidates
+                                           ?? ["root", "ubuntu", "debian", "fedora", "ec2-user", "admin", "opc", "centos", "arch", "pi", "lin", "deploy"]
 
   readonly property var activeServer: {
     for (var i = 0; i < servers.length; i++) {
@@ -136,6 +139,16 @@ Item {
     return (port === "443" || port === "8443") ? "https" : "http"
   }
 
+  // IPv6 hosts must be wrapped in brackets for URL construction
+  function _formatHostForUrl(host) {
+    if (!host) return host
+    // IPv6 has colons but no dots (no dots = not IPv4 or hostname.tld)
+    if (host.indexOf(":") !== -1 && host.indexOf(".") === -1) {
+      return "[" + host + "]"
+    }
+    return host
+  }
+
   function _parseDockerOutput(stdout, hostForUrl) {
     var lines = String(stdout || "").trim().split("\n")
     var results = []
@@ -163,7 +176,7 @@ Item {
       if (!port) continue
 
       var protocol = ovr.protocol || _resolveProtocol(port)
-      var url = protocol + "://" + hostForUrl + ":" + port
+      var url = protocol + "://" + _formatHostForUrl(hostForUrl) + ":" + port
       var category = ovr.category || _resolveCategory(containerName)
       var iconFile = ovr.iconFile || _resolveIconFile(containerName)
       var iconLetter = ovr.icon || ""
@@ -292,14 +305,14 @@ Item {
         if (err.indexOf("failed to look up local user") !== -1
             || err.indexOf("Permission denied") !== -1
             || err.indexOf("publickey") !== -1) {
-          root.discoveryError = "Nenhum usuário SSH funcionou neste servidor (tentei root, ubuntu, debian, fedora, etc). Verifique se a chave SSH está copiada (ssh-copy-id)."
+          root.discoveryError = "Nenhum usuário SSH funcionou neste servidor (tentei "
+                                + sshUserCandidates.slice(0, 5).join(", ")
+                                + "...). Verifique se a chave SSH está copiada (ssh-copy-id) ou edite o user manualmente."
         } else if (err.indexOf("Connection refused") !== -1
                    || err.indexOf("No route") !== -1
                    || err.indexOf("Operation timed out") !== -1
                    || err.indexOf("Connection timed out") !== -1) {
           root.discoveryError = "Servidor inalcançável — Tailscale conectado?"
-        } else if (err.indexOf("Permission denied") !== -1 || err.indexOf("publickey") !== -1) {
-          root.discoveryError = "SSH negado — rode: ssh-copy-id " + root.sshUser + "@" + root.sshHost
         } else if (err.indexOf("docker: command not found") !== -1
                    || err.indexOf("docker not found") !== -1
                    || err.indexOf("command not found") !== -1) {
@@ -507,19 +520,17 @@ Item {
   }
 
   // ─── User auto-detection ─────────────────────────────────────────────────
-  // Probes a list of common SSH users in parallel. Returns the first that connects.
-  // candidateUsers: array of strings; priorityUser: user to put first
+  // Probes SSH users in parallel; calls back with the first that connects (in priority order).
+  // priorityUser: tried first; defaults come from sshUserCandidates setting.
   function detectUserFor(host, port, priorityUser, callback) {
     if (!host) { callback(""); return }
 
     var candidates = []
     if (priorityUser && priorityUser !== "") candidates.push(priorityUser)
-    var defaults = ["root", "ubuntu", "debian", "fedora", "ec2-user", "admin", "opc", "centos", "arch", "th"]
+    var defaults = sshUserCandidates || []
     for (var i = 0; i < defaults.length; i++) {
       if (defaults[i] !== priorityUser) candidates.push(defaults[i])
     }
-
-    var userList = candidates.join(" ")
     // For each candidate, ssh with `true` (no-op). Print user that worked. head -1 picks first.
     var script =
       'for u in $@; do ' +
@@ -702,6 +713,18 @@ Item {
 
     function removeServer(id: string): string {
       return root.removeServer(id) ? ("removed " + id) : ("not found: " + id)
+    }
+
+    function addServerSimple(id: string, host: string, user: string): string {
+      if (!id || !host) return "need id and host"
+      var ok = root.addServer({ id: id, name: id, host: host, user: user || root.defaultSshUser, port: 22 })
+      return ok ? ("added " + id) : "failed"
+    }
+
+    function addServerAuto(id: string, host: string): string {
+      if (!id || !host) return "need id and host"
+      var ok = root.autoAddServer({ id: id, name: id, host: host, port: 22 })
+      return ok ? ("adding " + id + " (detecting user)") : "failed"
     }
 
     function autoDetect(id: string): string {
