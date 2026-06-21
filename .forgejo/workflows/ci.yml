@@ -1,0 +1,21 @@
+name: cerebro-ci
+on:
+  push:
+  pull_request:
+
+jobs:
+  qualidade:
+    runs-on: cerebro-ci
+    steps:
+      - uses: actions/checkout@v4
+      - name: instalar dependências do projeto
+        shell: bash
+        run: |
+          if [ -f package-lock.json ]; then npm ci || npm install || true
+          elif [ -f package.json ]; then npm install || true; fi
+          if [ -f requirements.txt ]; then pip install -r requirements.txt || true; fi
+          if [ -f pyproject.toml ] && [ ! -f requirements.txt ]; then pip install -e . || pip install . || true; fi
+          if [ -f go.mod ]; then go mod download || true; fi
+          if [ -f Cargo.toml ]; then cargo fetch || true; fi
+      - name: bateria cerebro (lint, types, testes, security, build)
+        run: cerebro check --ci
